@@ -1,0 +1,35 @@
+/* Importation des polices */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* Classes personnalisées Kayou */
+.rendering-pixelated { image-rendering: pixelated; }
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.hexagon-clip {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.glow-cyan {
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+.glass-panel {
+    background: rgba(13, 21, 22, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 229, 255, 0.1);
+}
+
+/* Scrollbar personnalisée style Minecraft/Futuriste */
+.stat-scrollbar::-webkit-scrollbar {
+    width: 2px;
+}
+.stat-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 229, 255, 0.05);
+}
+.stat-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 229, 255, 0.2);
+}
