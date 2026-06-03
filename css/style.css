@@ -1,38 +1,40 @@
 /* ============================================================
-   PROJET WKI - PACK VISUEL COMPLET : LUNA COSMIC
+   PROJET WKI - STYLE FINAL : LUNA COSMIC (DARK FANTASY)
    ============================================================ */
 
 /* 1. IMPORTATION DES POLICES */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 
-/* 2. VARIABLES DE COULEURS */
+/* 2. VARIABLES ET THÈME */
 :root {
-    --gold: #a3855b;             /* Or Antique */
-    --gold-bright: #d2c1a0;      /* Crème doré */
+    /* Couleurs Thème Or */
+    --gold: #a3855b;
+    --gold-bright: #d2c1a0;
     --gold-dim: rgba(163, 133, 91, 0.2);
     --gold-glow: rgba(163, 133, 91, 0.15);
-    --bg-dark: #030508;          /* Fond Cosmos Noir */
-    --bg-center: #080c14;        /* Bleu Nuit très sombre */
+    
+    /* Couleurs de Fond */
+    --bg-dark: #030508;
+    --bg-center: #080c14;
     --panel-bg: rgba(6, 10, 15, 0.98);
 
-    /* Couleurs de Rareté (8 Types) */
-    --commun: #4ade80;     /* Vert */
-    --rare: #3b82f6;       /* Bleu */
-    --epique: #a855f7;     /* Violet */
-    --legendaire: #eab308; /* Jaune */
-    --mythique: #d8b4fe;   /* Mauve clair */
-    --godlike: #ef4444;    /* Rouge */
-    --event: #ffffff;      /* Blanc */
+    /* Couleurs de Rareté */
+    --color-commun: #9d9d9d;
+    --color-rare: #3b82f6;
+    --color-epique: #a855f7;
+    --color-legendaire: #eab308;
+    --color-mythique: #d8b4fe;
+    --color-godlike: #ef4444;
+    --color-event: #1ed760;
 }
 
-/* 3. LOGIQUE D'INTERFACE (STYLE JEU VIDÉO) */
+/* 3. RESET ET LOGIQUE D'INTERFACE */
 * {
-    user-select: none;          /* Empêche de souligner le texte en bleu */
-    -webkit-user-drag: none;    /* Empêche de "traîner" les images */
+    user-select: none;
+    -webkit-user-drag: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Autorise la saisie uniquement dans la barre de recherche */
 input[type="text"], textarea {
     user-select: text !important;
 }
@@ -43,36 +45,30 @@ body {
     color: var(--gold-bright);
     font-family: 'EB Garamond', serif;
     margin: 0;
-    overflow: hidden; /* Empêche le scroll de toute la page */
+    overflow: hidden; /* Fix du scroll global */
+    min-height: screen;
 }
 
-/* 4. TYPOGRAPHIE (TITRES ET LABELS) */
-h1, h2, h3, [class*="Space_Grotesk"] {
+/* 4. TYPOGRAPHIE ET TITRES */
+h1, h2, h3, .medieval-title, .font-bold.uppercase {
     font-family: 'Cinzel', serif !important;
     color: var(--gold) !important;
     text-transform: uppercase;
     letter-spacing: 1.5px;
 }
 
-/* Unification des couleurs des statistiques et valeurs */
-[id*="stat-"], [id*="val-"], .text-primary, #points-available {
+/* Unification des statistiques */
+[id^="stat-"], [id*="val-"], .text-primary, #points-available, #player-level {
     color: var(--gold) !important;
     font-weight: bold;
 }
 
-/* Libellés des statistiques (Gris/Or atténué) */
-.text-on-surface\/60, .text-primary\/40, .text-on-surface\/30 {
+.stat-label, .opacity-60, .opacity-40 {
     color: var(--gold-bright) !important;
-    opacity: 0.8;
-}
-
-/* Icônes Google Material */
-.material-symbols-outlined {
-    color: var(--gold) !important;
     opacity: 0.7;
 }
 
-/* 5. ÉLÉMENTS DE FORMULAIRE (FIX BLANC) */
+/* 5. FORMULAIRES ET INPUTS */
 #search-item {
     background: rgba(0, 0, 0, 0.6) !important;
     border: 1px solid var(--gold-dim) !important;
@@ -81,49 +77,42 @@ h1, h2, h3, [class*="Space_Grotesk"] {
     outline: none !important;
     font-family: 'EB Garamond', serif;
     font-style: italic;
-}
-
-#search-item::placeholder {
-    color: var(--gold);
-    opacity: 0.4;
+    width: 100%;
 }
 
 select {
-    background-color: #0a0f16 !important; /* Force le fond sombre */
+    background-color: #0a0f16 !important;
     color: var(--gold) !important;
     border: 1px solid var(--gold-dim) !important;
     font-family: 'Cinzel', serif;
     font-size: 9px;
     padding: 6px;
     outline: none;
-    cursor: pointer;
 }
 
-select option {
-    background-color: #0a0f16;
-    color: var(--gold-bright);
-}
-
-/* 6. PANNEAUX ET SLOTS D'ÉQUIPEMENT */
-.glass-panel {
+/* 6. PANNEAUX ET SLOTS */
+.glass-panel, .panel-modern, .iron-panel, .stone-panel {
     background: var(--panel-bg);
     border: 1px solid var(--gold-dim) !important;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* Cadre personnage (Arche) */
-.h-\[480px\].w-80 {
+/* Cadre personnage (L'Arche centrale) */
+.h-\[480px\].w-80, .h-\[520px\].w-80 {
     border: 1px solid var(--gold-dim) !important;
     border-radius: 160px 160px 20px 20px !important;
-    background: linear-gradient(to bottom, rgba(163, 133, 91, 0.02), transparent) !important;
+    background: linear-gradient(to bottom, rgba(163, 133, 91, 0.05), transparent) !important;
 }
 
-/* Slots carrés */
+/* Style des Slots d'équipement */
 [data-slot] {
     border: 1px solid var(--gold-dim) !important;
     background: rgba(0, 0, 0, 0.4);
-    transition: 0.2s;
+    transition: all 0.2s ease;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 [data-slot]:hover {
@@ -131,152 +120,130 @@ select option {
     background: rgba(163, 133, 91, 0.05);
 }
 
-/* Slot sélectionné ou actif */
-[data-slot].border-white {
-    border-color: #fff !important;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-}
-
-.glow-gold {
-    border-color: var(--gold) !important;
-    box-shadow: 0 0 15px var(--gold-dim);
-}
-
-/* 7. BOUTONS D'ATTRIBUTS (+ / -) */
+/* Boutons d'attributs */
 .attr-btn {
     border: 1px solid var(--gold-dim) !important;
     color: var(--gold) !important;
     background: rgba(163, 133, 91, 0.05) !important;
-    width: 28px;
-    height: 22px;
+    width: 24px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Cinzel', serif;
-    font-size: 14px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 .attr-btn:hover {
-    background: var(--gold-dim) !important;
+    background: var(--gold) !important;
     color: white !important;
 }
 
-/* 8. BIBLIOTHÈQUE D'ARTÉFACTS (CARTES DATABASE) */
-.item-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid var(--gold-dim);
-    margin-bottom: 6px;
-    transition: 0.3s;
-    cursor: pointer;
+/* 7. SYSTÈME DE RARETÉ (BORDURES ET GLOWS) */
+/* Ces styles sont forcés pour l'inventaire et les slots équipés */
+.border-rarity-commun { border: 2px solid var(--color-commun) !important; }
+.border-rarity-rare { border: 2px solid var(--color-rare) !important; }
+.border-rarity-epique { border: 2px solid var(--color-epique) !important; }
+.border-rarity-legendaire { border: 2px solid var(--color-legendaire) !important; }
+.border-rarity-mythique { border: 2px solid var(--color-mythique) !important; }
+.border-rarity-godlike { border: 2px solid var(--color-godlike) !important; }
+.border-rarity-event { border: 2px solid var(--color-event) !important; }
+
+/* Textes de rareté */
+.text-rarity-commun { color: var(--color-commun) !important; }
+.text-rarity-rare { color: var(--color-rare) !important; }
+.text-rarity-epique { color: var(--color-epique) !important; }
+.text-rarity-legendaire { color: var(--color-legendaire) !important; }
+.text-rarity-mythique { color: var(--color-mythique) !important; }
+.text-rarity-godlike { color: var(--color-godlike) !important; }
+.text-rarity-event { color: var(--color-event) !important; }
+
+.glow-rarity {
+    animation: rarity-pulse 2s infinite alternate ease-in-out !important;
 }
 
-.item-card:hover {
-    transform: translateX(5px);
+@keyframes rarity-pulse {
+    from { opacity: 0.8; filter: brightness(1); }
+    to { opacity: 1; filter: brightness(1.3); }
+}
+
+/* 8. FILTRAGE PAR STATS (MENU GAUCHE) */
+.stat-row {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
+}
+
+.stat-row:hover {
     background: rgba(163, 133, 91, 0.05);
-    border-color: var(--gold);
 }
 
-/* Bordures de Rareté sur le côté gauche des cartes */
-.border-commun { border-left: 3px solid var(--commun) !important; }
-.border-rare { border-left: 3px solid var(--rare) !important; }
-.border-epique { border-left: 3px solid var(--epique) !important; }
-.border-legendaire { border-left: 3px solid var(--legendaire) !important; }
-.border-mythique { border-left: 3px solid var(--mythique) !important; }
-.border-godlike { border-left: 3px solid var(--godlike) !important; }
-.border-event { border-left: 3px solid var(--event) !important; }
+.stat-row.active-filter {
+    background: rgba(163, 133, 91, 0.15) !important;
+    border-left: 2px solid var(--gold) !important;
+    padding-left: 4px;
+}
 
-.item-card-img {
-    width: 38px;
-    height: 38px;
-    object-fit: cover;
+/* 9. BOUTONS DE FILTRE (DROITE) */
+.filter-btn {
+    background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--gold-dim);
-    padding: 2px;
-    background: #000;
-}
-
-.item-card-info h4 {
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    margin: 0;
     color: var(--gold-bright);
-}
-
-.item-card-info p {
+    font-family: 'Cinzel', serif;
     font-size: 8px;
-    margin: 0;
-    opacity: 0.6;
     text-transform: uppercase;
+    transition: all 0.2s;
 }
 
-/* 9. SCEAUX DE RARETÉ (CHIPS) */
-.rarity-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 15px;
-}
-
-.rarity-chip {
-    flex: 1;
-    min-width: 65px;
-    font-family: 'Cinzel', serif;
-    font-size: 7px;
-    padding: 5px 2px;
-    text-align: center;
-    border: 1px solid var(--gold-dim);
-    background: rgba(0, 0, 0, 0.3);
-    opacity: 0.4;
-    cursor: pointer;
-    color: var(--gold-bright);
-    transition: 0.3s;
-}
-
-.rarity-chip:hover, .rarity-chip.active {
-    opacity: 1;
-    border-color: var(--gold);
+.filter-btn:hover, .filter-btn.active {
     background: var(--gold-dim);
+    border-color: var(--gold) !important;
+    color: white;
+    box-shadow: 0 0 10px var(--gold-dim);
 }
 
-/* 10. DÉCORATIONS (LEVEL BAR & SÉPARATEURS) */
+/* 10. DÉCORATIONS ET SCROLLBAR */
 #level-bar {
     background: var(--gold) !important;
     box-shadow: 0 0 12px var(--gold-glow);
 }
 
-.mystic-separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: var(--gold);
-    opacity: 0.3;
-    margin: 15px 0;
+/* Scrollbar dorée */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-dim) transparent;
 }
 
-.mystic-separator::before, .mystic-separator::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid var(--gold-dim);
+/* Icônes Material Symbols */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 20;
+    display: inline-flex;
+    vertical-align: middle;
 }
 
-.mystic-separator:not(:empty)::before { margin-right: 1em; }
-.mystic-separator:not(:empty)::after { margin-left: 1em; }
-
-/* Custom Scrollbar */
-.stat-scrollbar::-webkit-scrollbar {
-    width: 3px;
+/* Animation de Flash à l'équipement */
+.equip-pulse-effect {
+    animation: equip-flash 2s ease-out !important;
 }
 
-.stat-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+@keyframes equip-flash {
+    0% { filter: brightness(1); transform: scale(1); }
+    20% { filter: brightness(2); transform: scale(1.05); }
+    100% { filter: brightness(1); transform: scale(1); }
 }
 
-.stat-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--gold-dim);
-    border-radius: 10px;
+/* Utilitaires */
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.grid-cols-2 {
+    border-top: 1px solid rgba(163, 133, 91, 0.1);
+    padding-top: 4px;
 }

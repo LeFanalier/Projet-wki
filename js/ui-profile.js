@@ -1,10 +1,10 @@
 /* ============================================================
-   PROJET WKI - UI PROFILE ENGINE (LUNA COSMIC)
+   PROJET WKI - UI PROFILE ENGINE (FINAL STABLE VERSION)
    ============================================================ */
 
 let selectedSlot = null;
 let allItems = [];
-let activeBuildIndex = 0; // Défini ici pour correspondre aux builds de build-engine.js
+let activeBuildIndex = 0;
 
 let filters = {
     search: "",
@@ -14,16 +14,51 @@ let filters = {
     slot: null
 };
 
+const rarityColors = {
+    'COMMUN': '#9d9d9d',
+    'RARE': '#0070dd',
+    'ÉPIQUE': '#a335ee',
+    'LÉGENDAIRE': '#ff8000',
+    'MYTHIQUE': '#e6cc80',
+    'GODLIKE': '#e63946',
+    'EVENT': '#1ed760'
+};
+
+const statIcons = {
+    deg_att: 'swords', deg_phys: 'bolt', bonus_phys: 'trending_up', vit_att: 'air',
+    crit_chance: 'cyclone', crit_dmg: 'explosion', crit_comp_chance: 'magic_button',
+    crit_comp_dmg: 'electric_bolt', deg_mag: 'auto_awesome', deg_proj: 'near_me',
+    vamp: 'motion_photos_on', lifesteal: 'bloodtype', def: 'shield',
+    red_dmg: 'verified_user', esquive: 'visibility_off', tenacite: 'gavel',
+    hp: 'favorite', reg_hp: 'vital_signs', mana: 'diamond', reg_mana: 'shutter_speed',
+    stamina: 'eco', reg_stam: 'energy_savings_leaf', heal_bonus: 'add_box',
+    dmg_cap: 'flare', cdr: 'progress_activity', speed: 'directions_run',
+    magic_find: 'auto_fix_high', bonus_xp: 'keyboard_double_arrow_up'
+};
+
+const statLabels = {
+    deg_att: 'Attaque', deg_phys: 'Dégâts Phys.', bonus_phys: 'Bonus Phys.',
+    vit_att: 'Vit. Attaque', crit_chance: 'Critique %', crit_dmg: 'Dégâts Crit.',
+    crit_comp_chance: 'Crit. Comp.', crit_comp_dmg: 'Dég. Crit. Comp.',
+    deg_mag: 'Dégâts Mag.', deg_proj: 'Projectiles', vamp: 'Vampirisme',
+    lifesteal: 'Vol de Vie', def: 'Défense', red_dmg: 'Réduc. Dégâts',
+    esquive: 'Esquive', tenacite: 'Ténacité', hp: 'Santé', reg_hp: 'Régén. Santé',
+    mana: 'Mana', reg_mana: 'Régén. Mana', stamina: 'Endurance',
+    reg_stam: 'Régén. Stam.', heal_bonus: 'Soin Bonus', dmg_cap: 'Dég. Capacité',
+    cdr: 'Récupération', speed: 'Vitesse', magic_find: 'Butin Mag.', bonus_xp: 'Bonus XP'
+};
+
 // --- 1. INITIALISATION ---
 document.addEventListener('DOMContentLoaded', () => {
     fetchInventory();
     setupFilters();
-    setupRarityChips();
     setupSlotInteractions();
+    setupStatRowFilters();
+    setupBuildSwitch();
 });
 
-// Initialise les écouteurs de la barre de recherche et des menus
 function setupFilters() {
+    // Recherche textuelle
     const searchInp = document.getElementById('search-item');
     if (searchInp) {
         searchInp.addEventListener('input', (e) => {
@@ -32,34 +67,45 @@ function setupFilters() {
         });
     }
 
-    const palierSel = document.getElementById('filter-palier');
-    if (palierSel) {
-        palierSel.addEventListener('change', (e) => {
-            filters.palier = e.target.value;
+    // Boutons de Rareté (Filtres groupés)
+    const rarityBtns = document.querySelectorAll('#rarity-filter-group .filter-btn');
+    rarityBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            rarityBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filters.rarity = btn.getAttribute('data-rarity');
             applyAllFilters();
         });
-    }
+    });
 
-    const statSel = document.getElementById('filter-stat');
-    if (statSel) {
-        statSel.addEventListener('change', (e) => {
-            filters.stat = e.target.value;
+    // Boutons de Palier
+    const palierBtns = document.querySelectorAll('#palier-filter-group .filter-btn');
+    palierBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            palierBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filters.palier = btn.getAttribute('data-palier');
             applyAllFilters();
         });
-    }
+    });
 }
 
-// Gère le clic sur les 8 types de raretés (Chips)
-function setupRarityChips() {
-    const chips = document.querySelectorAll('.rarity-chip');
-    chips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            // UI : Activer le bouton cliqué
-            chips.forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
+function setupStatRowFilters() {
+    const rows = document.querySelectorAll('aside:first-of-type .stat-row');
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            const statSpan = row.querySelector('span[id^="stat-"]');
+            if (!statSpan) return;
+            const statKey = statSpan.id.replace('stat-', '');
 
-            // Logique : Filtrer
-            filters.rarity = chip.getAttribute('data-rarity');
+            if (filters.stat === statKey) {
+                filters.stat = 'ALL';
+                row.classList.remove('active-filter');
+            } else {
+                rows.forEach(r => r.classList.remove('active-filter'));
+                row.classList.add('active-filter');
+                filters.stat = statKey;
+            }
             applyAllFilters();
         });
     });
@@ -68,205 +114,173 @@ function setupRarityChips() {
 // --- 2. LOGIQUE DE FILTRAGE ---
 function applyAllFilters() {
     let filtered = allItems.filter(item => {
-        // Match Recherche (Nom ou Set)
-        const matchSearch = item.nom.toLowerCase().includes(filters.search) || 
-                           (item.nom_set && item.nom_set.toLowerCase().includes(filters.search));
-        
-        // Match Rareté
+        const matchSearch = item.nom.toLowerCase().includes(filters.search);
         const matchRarity = filters.rarity === "ALL" || item.rarete === filters.rarity;
-        
-        // Match Palier
         const matchPalier = filters.palier === "ALL" || String(item.palier) === filters.palier;
-        
-        // Match Slot (Filtrage auto par clic au centre)
         const matchSlot = !filters.slot || item.emplacement.toLowerCase() === filters.slot.toLowerCase();
-
-        // Match Statistique (L'item possède-t-il la stat demandée ?)
         const matchStat = filters.stat === "ALL" || (item.stats && item.stats[filters.stat] > 0);
-
         return matchSearch && matchRarity && matchPalier && matchSlot && matchStat;
     });
 
     renderInventory(filtered);
-    
-    // Mise à jour du compteur en bas
     const countEl = document.getElementById('item-count');
     if (countEl) countEl.innerText = filtered.length;
 }
 
-// --- 3. RENDU DE L'INVENTAIRE (CARTES TAROT) ---
+// --- 3. RENDU DE L'INVENTAIRE ---
 function renderInventory(items) {
     const container = document.getElementById('items-container');
     if (!container) return;
     container.innerHTML = '';
 
     items.forEach(item => {
+        const rarity = item.rarete.toUpperCase();
+        const color = rarityColors[rarity] || '#9d9d9d';
+
+        let statsHtml = '<div class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">';
+        if (item.stats) {
+            Object.entries(item.stats).forEach(([statName, value]) => {
+                if (value > 0) {
+                    const icon = statIcons[statName] || 'add';
+                    const label = statLabels[statName] || statName;
+                    const isPercent = ['crit_chance', 'crit_dmg', 'crit_comp_chance', 'crit_comp_dmg', 'vamp', 'lifesteal', 'red_dmg', 'esquive', 'cdr', 'deg_mag', 'bonus_phys', 'magic_find', 'bonus_xp'].includes(statName);
+                    statsHtml += `
+                        <div class="flex items-center justify-between bg-white/[0.02] border border-white/5 px-1.5 py-1">
+                            <div class="flex items-center gap-1 overflow-hidden">
+                                <span class="material-symbols-outlined text-[10px] opacity-40">${icon}</span>
+                                <span class="text-[7px] uppercase opacity-50 truncate">${label}</span>
+                            </div>
+                            <span class="text-[8px] font-black text-white">${value}${isPercent ? '%' : ''}</span>
+                        </div>`;
+                }
+            });
+        }
+        statsHtml += '</div>';
+
         const card = document.createElement('div');
-        
-        // Nettoyage de la rareté pour la classe CSS (ex: LÉGENDAIRE -> legendaire)
-        const rarityKey = item.rarete.toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Enlever accents
-            .replace(/\s/g, ""); // Enlever espaces
-            
-        card.className = `item-card border-${rarityKey}`;
+        card.className = `group cursor-pointer bg-white/[0.01] border-l-2 p-3 hover:bg-white/[0.04] transition-all relative overflow-hidden mb-2`;
+        card.style.borderLeftColor = color;
         
         card.innerHTML = `
-            <img src="${item.image_url}" class="item-card-img" onerror="this.src='https://placehold.co/100x100?text=Item'" draggable="false">
-            <div class="item-card-info">
-                <h4>${item.nom}</h4>
-                <p>${item.rarete} • PALIER ${item.palier || 1}</p>
-            </div>
-        `;
+            <div class="flex gap-4">
+                <div class="w-14 h-14 bg-black border-2 flex-shrink-0 relative ${rarity === 'LÉGENDAIRE' || rarity === 'MYTHIQUE' ? 'glow-rarity' : ''}" 
+                     style="border-color: ${color}">
+                    <img src="${item.image_url}" class="w-full h-full object-cover p-1 brightness-75 group-hover:brightness-100 transition-all">
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <h4 class="text-[10px] font-black text-white truncate uppercase tracking-widest">${item.nom}</h4>
+                        <span class="text-[6px] font-black uppercase px-1 border" style="color: ${color}; border-color: ${color}">${item.rarete}</span>
+                    </div>
+                    <div class="flex gap-3 text-[7px] opacity-30 uppercase font-bold mb-1">
+                        <span>${item.emplacement}</span><span>Tier ${item.palier || 1}</span>
+                    </div>
+                    ${statsHtml}
+                </div>
+            </div>`;
         
-        // Clic pour équiper
-        card.addEventListener('click', () => equipItem(item));
-        
+        card.onclick = () => equipItem(item);
         container.appendChild(card);
     });
 }
 
 // --- 4. ÉQUIPEMENT ET VISUELS ---
 function equipItem(item) {
-    if (!selectedSlot) {
-        alert("SYSTÈME : VEUILLEZ SÉLECTIONNER UN EMPLACEMENT AU CENTRE.");
-        return;
-    }
-    
-    // On enregistre l'item dans l'objet global (défini dans build-engine.js)
-    if (typeof builds !== 'undefined') {
-        builds[activeBuildIndex][selectedSlot] = item;
-        refreshVisualSlots();
+    if (!selectedSlot) return alert("SYSTÈME : CHOISIS UN SLOT D'ABORD");
+    builds[activeBuildIndex][selectedSlot] = item;
+    refreshVisualSlots();
+
+    const slotEl = document.querySelector(`[data-slot="${selectedSlot}"]`);
+    if (slotEl) {
+        slotEl.classList.add('equip-pulse-effect');
+        setTimeout(() => slotEl.classList.remove('equip-pulse-effect'), 2000);
     }
 }
 
 function refreshVisualSlots() {
-    if (typeof builds === 'undefined') return;
-    
     const current = builds[activeBuildIndex];
     document.querySelectorAll('[data-slot]').forEach(slotEl => {
         const slotName = slotEl.getAttribute('data-slot');
         const item = current[slotName];
-        
+
+        slotEl.classList.remove('border-white/10', 'border-white/20', 'glow-rarity');
+        slotEl.style.border = ""; 
+        slotEl.style.boxShadow = "";
+
         if (item) {
-            // On affiche l'image de l'item équipé
-            slotEl.innerHTML = `<img src="${item.image_url}" class="w-full h-full object-cover p-1 animate-pulse">`;
-            slotEl.classList.add('glow-gold');
-            slotEl.style.borderColor = "var(--gold)";
+            const rarity = item.rarete.trim().toUpperCase();
+            const color = rarityColors[rarity] || '#9d9d9d';
+            slotEl.style.setProperty('border', `2px solid ${color}`, 'important');
+            slotEl.style.boxShadow = `0 0 10px ${color}33`; 
+            if (rarity !== 'COMMUN') slotEl.classList.add('glow-rarity');
+            slotEl.innerHTML = `<img src="${item.image_url}" class="w-full h-full object-cover p-1">`;
         } else {
-            // On remet l'icône par défaut si vide
-            const iconMap = { 
-                arme: 'swords', casque: 'shield_person', plastron: 'apparel', gants: 'front_hand', 
-                jambieres: 'layers', bottes: 'ice_skating', amulette: 'military_tech', 
-                bracelet: 'watch', anneau1: 'toll', anneau2: 'toll', secondaire: 'shield', 
-                artefact1: 'deployed_code', artefact2: 'deployed_code', artefact3: 'deployed_code' 
-            };
-            slotEl.innerHTML = `<span class="material-symbols-outlined opacity-20 text-3xl">${iconMap[slotName] || 'help'}</span>`;
-            slotEl.classList.remove('glow-gold');
-            slotEl.style.borderColor = "";
+            const iconMap = { arme: 'swords', casque: 'shield_person', plastron: 'apparel', gants: 'front_hand', jambieres: 'layers', bottes: 'ice_skating', amulette: 'military_tech', bracelet: 'watch', anneau1: 'toll', anneau2: 'toll', secondaire: 'shield', artefact1: 'deployed_code', artefact2: 'deployed_code', artefact3: 'deployed_code' };
+            slotEl.innerHTML = `<span class="material-symbols-outlined opacity-10 text-3xl">${iconMap[slotName]}</span>`;
+            slotEl.style.border = "1px solid rgba(255,255,255,0.1)";
         }
     });
-    
-    // Recalculer les statistiques globales
-    if (typeof updateFinalStats === 'function') {
-        updateFinalStats();
-    }
+    if (typeof updateFinalStats === "function") updateFinalStats();
 }
 
-// --- 5. SÉLECTION DES SLOTS ---
+// --- 5. INTERACTIONS SLOTS ---
 function setupSlotInteractions() {
     document.querySelectorAll('[data-slot]').forEach(slot => {
         slot.addEventListener('click', () => {
-            const slotName = slot.getAttribute('data-slot');
-            
-            // 1. État
-            selectedSlot = slotName;
-            filters.slot = slotName;
+            document.querySelectorAll('[data-slot]').forEach(s => s.style.backgroundColor = "transparent");
+            selectedSlot = slot.getAttribute('data-slot');
+            filters.slot = selectedSlot;
+            slot.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
 
-            // 2. UI : Surbrillance blanche sur le slot sélectionné
-            document.querySelectorAll('[data-slot]').forEach(s => s.classList.remove('border-white', 'bg-white/10'));
-            slot.classList.add('border-white', 'bg-white/10');
-
-            // 3. UI : Affichage de l'indicateur de filtre dans l'aside de droite
             const indicator = document.getElementById('slot-indicator');
             const nameDisplay = document.getElementById('active-slot-name');
-            
             if (indicator && nameDisplay) {
                 indicator.classList.remove('hidden');
-                const namesMapping = { 
-                    arme: "Arme", casque: "Casque", plastron: "Plastron", gants: "Gants", 
-                    jambieres: "Jambières", bottes: "Bottes", secondaire: "Secondaire", 
-                    amulette: "Amulette", bracelet: "Bracelet", anneau1: "Anneau 1", 
-                    anneau2: "Anneau 2", artefact1: "Artéfact 1", artefact2: "Artéfact 2", artefact3: "Artéfact 3" 
-                };
-                nameDisplay.innerText = namesMapping[slotName] || slotName;
+                nameDisplay.innerText = selectedSlot.toUpperCase();
             }
-
-            // 4. Filtrer la liste auto
             applyAllFilters();
         });
     });
 }
 
-// Supprimer le filtre de slot (bouton X)
 function clearSlotFilter() {
     filters.slot = null;
     selectedSlot = null;
-    
-    const indicator = document.getElementById('slot-indicator');
-    if (indicator) indicator.classList.add('hidden');
-    
-    document.querySelectorAll('[data-slot]').forEach(s => s.classList.remove('border-white', 'bg-white/10'));
-    
+    document.querySelectorAll('[data-slot]').forEach(s => s.style.backgroundColor = "transparent");
+    if (document.getElementById('slot-indicator')) document.getElementById('slot-indicator').classList.add('hidden');
     applyAllFilters();
 }
 
-// --- 6. CHANGEMENT DE BUILD ---
-document.querySelectorAll('[data-build]').forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-        activeBuildIndex = i;
-        
-        document.querySelectorAll('[data-build]').forEach(b => {
-            b.classList.remove('glow-gold', 'border-primary', 'text-primary');
-            b.classList.add('opacity-40');
+// --- 6. SYSTÈME DE BUILDS ---
+function setupBuildSwitch() {
+    document.querySelectorAll('[data-build]').forEach((btn, i) => {
+        btn.addEventListener('click', () => {
+            activeBuildIndex = i;
+            document.querySelectorAll('[data-build]').forEach(b => b.classList.add('opacity-30'));
+            btn.classList.remove('opacity-30');
+            refreshVisualSlots();
         });
-        
-        btn.classList.add('glow-gold', 'border-primary', 'text-primary');
-        btn.classList.remove('opacity-40');
-        
-        refreshVisualSlots();
     });
-});
-
-// --- 7. CHARGEMENT DEPUIS LA BASE DE DONNÉES ---
-async function fetchInventory() {
-    if (typeof supabaseClient === 'undefined') return;
-
-    const { data, error } = await supabaseClient.from('items').select('*');
-    if (error) {
-        console.error("Erreur de récupération des items :", error);
-        return;
-    }
-    
-    allItems = data;
-    applyAllFilters(); // Affiche tout au début
 }
 
-// Réinitialisation totale (bouton Reset)
+// --- 7. DATABASE & RESET ---
+async function fetchInventory() {
+    if (typeof supabaseClient === 'undefined') return;
+    const { data, error } = await supabaseClient.from('items').select('*');
+    if (error) return console.error("Erreur Database:", error);
+    allItems = data;
+    applyAllFilters(); 
+}
+
 function resetAllFilters() {
     filters = { search: "", rarity: "ALL", palier: "ALL", stat: "ALL", slot: null };
     
-    const searchInp = document.getElementById('search-item');
-    if (searchInp) searchInp.value = "";
-    
-    const palierSel = document.getElementById('filter-palier');
-    if (palierSel) palierSel.value = "ALL";
-
-    const statSel = document.getElementById('filter-stat');
-    if (statSel) statSel.value = "ALL";
-    
-    document.querySelectorAll('.rarity-chip').forEach(c => c.classList.remove('active'));
-    const allChip = document.querySelector('[data-rarity="ALL"]');
-    if (allChip) allChip.classList.add('active');
+    // UI Resets
+    document.getElementById('search-item').value = "";
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('[data-rarity="ALL"]').classList.add('active');
+    document.querySelector('[data-palier="ALL"]').classList.add('active');
+    document.querySelectorAll('.stat-row').forEach(r => r.classList.remove('active-filter'));
     
     clearSlotFilter();
 }
