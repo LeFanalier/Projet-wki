@@ -1,35 +1,282 @@
-/* Importation des polices */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+/* ============================================================
+   PROJET WKI - PACK VISUEL COMPLET : LUNA COSMIC
+   ============================================================ */
 
-/* Classes personnalisées Kayou */
-.rendering-pixelated { image-rendering: pixelated; }
+/* 1. IMPORTATION DES POLICES */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
+/* 2. VARIABLES DE COULEURS */
+:root {
+    --gold: #a3855b;             /* Or Antique */
+    --gold-bright: #d2c1a0;      /* Crème doré */
+    --gold-dim: rgba(163, 133, 91, 0.2);
+    --gold-glow: rgba(163, 133, 91, 0.15);
+    --bg-dark: #030508;          /* Fond Cosmos Noir */
+    --bg-center: #080c14;        /* Bleu Nuit très sombre */
+    --panel-bg: rgba(6, 10, 15, 0.98);
+
+    /* Couleurs de Rareté (8 Types) */
+    --commun: #4ade80;     /* Vert */
+    --rare: #3b82f6;       /* Bleu */
+    --epique: #a855f7;     /* Violet */
+    --legendaire: #eab308; /* Jaune */
+    --mythique: #d8b4fe;   /* Mauve clair */
+    --godlike: #ef4444;    /* Rouge */
+    --event: #ffffff;      /* Blanc */
+}
+
+/* 3. LOGIQUE D'INTERFACE (STYLE JEU VIDÉO) */
+* {
+    user-select: none;          /* Empêche de souligner le texte en bleu */
+    -webkit-user-drag: none;    /* Empêche de "traîner" les images */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Autorise la saisie uniquement dans la barre de recherche */
+input[type="text"], textarea {
+    user-select: text !important;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background: radial-gradient(circle at center, var(--bg-center) 0%, var(--bg-dark) 80%);
+    color: var(--gold-bright);
+    font-family: 'EB Garamond', serif;
+    margin: 0;
+    overflow: hidden; /* Empêche le scroll de toute la page */
+}
+
+/* 4. TYPOGRAPHIE (TITRES ET LABELS) */
+h1, h2, h3, [class*="Space_Grotesk"] {
+    font-family: 'Cinzel', serif !important;
+    color: var(--gold) !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Unification des couleurs des statistiques et valeurs */
+[id*="stat-"], [id*="val-"], .text-primary, #points-available {
+    color: var(--gold) !important;
+    font-weight: bold;
+}
+
+/* Libellés des statistiques (Gris/Or atténué) */
+.text-on-surface\/60, .text-primary\/40, .text-on-surface\/30 {
+    color: var(--gold-bright) !important;
+    opacity: 0.8;
+}
+
+/* Icônes Google Material */
 .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    color: var(--gold) !important;
+    opacity: 0.7;
 }
 
-.hexagon-clip {
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+/* 5. ÉLÉMENTS DE FORMULAIRE (FIX BLANC) */
+#search-item {
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid var(--gold-dim) !important;
+    color: var(--gold-bright) !important;
+    padding: 10px 12px 10px 35px !important;
+    outline: none !important;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
 }
 
-.glow-cyan {
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+#search-item::placeholder {
+    color: var(--gold);
+    opacity: 0.4;
 }
 
+select {
+    background-color: #0a0f16 !important; /* Force le fond sombre */
+    color: var(--gold) !important;
+    border: 1px solid var(--gold-dim) !important;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    padding: 6px;
+    outline: none;
+    cursor: pointer;
+}
+
+select option {
+    background-color: #0a0f16;
+    color: var(--gold-bright);
+}
+
+/* 6. PANNEAUX ET SLOTS D'ÉQUIPEMENT */
 .glass-panel {
-    background: rgba(13, 21, 22, 0.4);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(0, 229, 255, 0.1);
+    background: var(--panel-bg);
+    border: 1px solid var(--gold-dim) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* Scrollbar personnalisée style Minecraft/Futuriste */
+/* Cadre personnage (Arche) */
+.h-\[480px\].w-80 {
+    border: 1px solid var(--gold-dim) !important;
+    border-radius: 160px 160px 20px 20px !important;
+    background: linear-gradient(to bottom, rgba(163, 133, 91, 0.02), transparent) !important;
+}
+
+/* Slots carrés */
+[data-slot] {
+    border: 1px solid var(--gold-dim) !important;
+    background: rgba(0, 0, 0, 0.4);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+[data-slot]:hover {
+    border-color: var(--gold) !important;
+    background: rgba(163, 133, 91, 0.05);
+}
+
+/* Slot sélectionné ou actif */
+[data-slot].border-white {
+    border-color: #fff !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+.glow-gold {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 15px var(--gold-dim);
+}
+
+/* 7. BOUTONS D'ATTRIBUTS (+ / -) */
+.attr-btn {
+    border: 1px solid var(--gold-dim) !important;
+    color: var(--gold) !important;
+    background: rgba(163, 133, 91, 0.05) !important;
+    width: 28px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.attr-btn:hover {
+    background: var(--gold-dim) !important;
+    color: white !important;
+}
+
+/* 8. BIBLIOTHÈQUE D'ARTÉFACTS (CARTES DATABASE) */
+.item-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--gold-dim);
+    margin-bottom: 6px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.item-card:hover {
+    transform: translateX(5px);
+    background: rgba(163, 133, 91, 0.05);
+    border-color: var(--gold);
+}
+
+/* Bordures de Rareté sur le côté gauche des cartes */
+.border-commun { border-left: 3px solid var(--commun) !important; }
+.border-rare { border-left: 3px solid var(--rare) !important; }
+.border-epique { border-left: 3px solid var(--epique) !important; }
+.border-legendaire { border-left: 3px solid var(--legendaire) !important; }
+.border-mythique { border-left: 3px solid var(--mythique) !important; }
+.border-godlike { border-left: 3px solid var(--godlike) !important; }
+.border-event { border-left: 3px solid var(--event) !important; }
+
+.item-card-img {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border: 1px solid var(--gold-dim);
+    padding: 2px;
+    background: #000;
+}
+
+.item-card-info h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    margin: 0;
+    color: var(--gold-bright);
+}
+
+.item-card-info p {
+    font-size: 8px;
+    margin: 0;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+/* 9. SCEAUX DE RARETÉ (CHIPS) */
+.rarity-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 15px;
+}
+
+.rarity-chip {
+    flex: 1;
+    min-width: 65px;
+    font-family: 'Cinzel', serif;
+    font-size: 7px;
+    padding: 5px 2px;
+    text-align: center;
+    border: 1px solid var(--gold-dim);
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0.4;
+    cursor: pointer;
+    color: var(--gold-bright);
+    transition: 0.3s;
+}
+
+.rarity-chip:hover, .rarity-chip.active {
+    opacity: 1;
+    border-color: var(--gold);
+    background: var(--gold-dim);
+}
+
+/* 10. DÉCORATIONS (LEVEL BAR & SÉPARATEURS) */
+#level-bar {
+    background: var(--gold) !important;
+    box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.mystic-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--gold);
+    opacity: 0.3;
+    margin: 15px 0;
+}
+
+.mystic-separator::before, .mystic-separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--gold-dim);
+}
+
+.mystic-separator:not(:empty)::before { margin-right: 1em; }
+.mystic-separator:not(:empty)::after { margin-left: 1em; }
+
+/* Custom Scrollbar */
 .stat-scrollbar::-webkit-scrollbar {
-    width: 2px;
+    width: 3px;
 }
+
 .stat-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0, 229, 255, 0.05);
+    background: transparent;
 }
+
 .stat-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(0, 229, 255, 0.2);
+    background: var(--gold-dim);
+    border-radius: 10px;
 }
