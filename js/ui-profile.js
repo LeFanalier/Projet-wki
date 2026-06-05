@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSlotInteractions();
     setupStatRowFilters();
     setupBuildSwitch();
+    initLevelSystem(); // Lancement du système de niveau interactif
 });
 
 function setupFilters() {
@@ -138,24 +139,26 @@ function renderInventory(items) {
         const color = rarityColors[rarity] || '#9d9d9d';
 
         let statsHtml = '<div class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">';
-        if (item.stats) {
-            Object.entries(item.stats).forEach(([statName, value]) => {
-                if (value > 0) {
-                    const icon = statIcons[statName] || 'add';
-                    const label = statLabels[statName] || statName;
-                    const isPercent = ['crit_chance', 'crit_dmg', 'crit_comp_chance', 'crit_comp_dmg', 'vamp', 'lifesteal', 'red_dmg', 'esquive', 'cdr', 'deg_mag', 'bonus_phys', 'magic_find', 'bonus_xp'].includes(statName);
-                    statsHtml += `
-                        <div class="flex items-center justify-between bg-white/[0.02] border border-white/5 px-1.5 py-1">
-                            <div class="flex items-center gap-1 overflow-hidden">
-                                <span class="material-symbols-outlined text-[10px] opacity-40">${icon}</span>
-                                <span class="text-[7px] uppercase opacity-50 truncate">${label}</span>
-                            </div>
-                            <span class="text-[8px] font-black text-white">${value}${isPercent ? '%' : ''}</span>
-                        </div>`;
+                if (item.stats) {
+                    Object.entries(item.stats).forEach(([statName, value]) => {
+                        if (value > 0) {
+                            const icon = statIcons[statName] || 'add';
+                            const label = statLabels[statName] || statName;
+                            const isPercent = ['crit_chance', 'crit_dmg', 'crit_comp_chance', 'crit_comp_dmg', 'vamp', 'lifesteal', 'red_dmg', 'esquive', 'cdr', 'deg_mag', 'bonus_phys', 'magic_find', 'bonus_xp'].includes(statName);
+                            
+                            // Rendu amélioré avec fond contrasté noir, icône cyan, libellé blanc net et valeur dorée
+                            statsHtml += `
+                                <div class="flex items-center justify-between bg-black/50 px-2 py-1.5 rounded" style="border: 1px solid rgba(163, 133, 91, 0.15)">
+                                    <div class="flex items-center gap-1.5 overflow-hidden">
+                                        <span class="material-symbols-outlined text-[11px] text-cyan-400 opacity-90">${icon}</span>
+                                        <span class="text-[8px] uppercase text-white/80 tracking-wider font-semibold truncate">${label}</span>
+                                    </div>
+                                    <span class="text-[10px] font-black" style="color: var(--gold-bright)">${value}${isPercent ? '%' : ''}</span>
+                                </div>`;
+                        }
+                    });
                 }
-            });
-        }
-        statsHtml += '</div>';
+                statsHtml += '</div>';
 
         const card = document.createElement('div');
         card.className = `group cursor-pointer bg-white/[0.01] border-l-2 p-3 hover:bg-white/[0.04] transition-all relative overflow-hidden mb-2`;
@@ -227,10 +230,16 @@ function refreshVisualSlots() {
 function setupSlotInteractions() {
     document.querySelectorAll('[data-slot]').forEach(slot => {
         slot.addEventListener('click', () => {
-            document.querySelectorAll('[data-slot]').forEach(s => s.style.backgroundColor = "transparent");
+            // Nettoie l'ancien slot actif
+            document.querySelectorAll('[data-slot]').forEach(s => {
+                s.classList.remove('active-slot-selection');
+            });
+            
             selectedSlot = slot.getAttribute('data-slot');
             filters.slot = selectedSlot;
-            slot.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+            
+            // Applique le halo néon sur le slot actif
+            slot.classList.add('active-slot-selection');
 
             const indicator = document.getElementById('slot-indicator');
             const nameDisplay = document.getElementById('active-slot-name');
@@ -246,7 +255,9 @@ function setupSlotInteractions() {
 function clearSlotFilter() {
     filters.slot = null;
     selectedSlot = null;
-    document.querySelectorAll('[data-slot]').forEach(s => s.style.backgroundColor = "transparent");
+    document.querySelectorAll('[data-slot]').forEach(s => {
+        s.classList.remove('active-slot-selection');
+    });
     if (document.getElementById('slot-indicator')) document.getElementById('slot-indicator').classList.add('hidden');
     applyAllFilters();
 }
@@ -256,8 +267,8 @@ function setupBuildSwitch() {
     document.querySelectorAll('[data-build]').forEach((btn, i) => {
         btn.addEventListener('click', () => {
             activeBuildIndex = i;
-            document.querySelectorAll('[data-build]').forEach(b => b.classList.add('opacity-30'));
-            btn.classList.remove('opacity-30');
+            document.querySelectorAll('[data-build]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             refreshVisualSlots();
         });
     });
@@ -283,4 +294,52 @@ function resetAllFilters() {
     document.querySelectorAll('.stat-row').forEach(r => r.classList.remove('active-filter'));
     
     clearSlotFilter();
+}
+// --- 8. SYSTÈME DE NIVEAUX & ATTRIBUTION DE POINTS ---
+let currentLevel = 1;
+let availablePoints = 0;
+
+function initLevelSystem() {
+    const levelEl = document.getElementById('player-level');
+    if (levelEl) {
+        currentLevel = parseInt(levelEl.innerText) || 1;
+    }
+    const pointsEl = document.getElementById('points-available');
+    if (pointsEl) {
+        availablePoints = parseInt(pointsEl.innerText) || 0;
+    }
+    updateLevelUI();
+}
+
+function changeLevel(amount) {
+    if (currentLevel + amount < 1) return; // Niveau minimum = 1
+    currentLevel += amount;
+    
+    // Chaque montée de niveau octroie +5 Points de Bénédiction.
+    // Chaque baisse de niveau retire 5 points (sans descendre sous 0).
+    if (amount > 1) {
+        availablePoints += amount * 1;
+    } else {
+        availablePoints = Math.max(0, availablePoints + (amount * 1));
+    }
+    
+    updateLevelUI();
+}
+
+function updateLevelUI() {
+    // Mise à jour de l'affichage du niveau
+    const levelEl = document.getElementById('player-level');
+    if (levelEl) levelEl.innerText = currentLevel;
+
+    // Mise à jour des Points de Bénédiction disponibles pour les attributs
+    const pointsEl = document.getElementById('points-available');
+    if (pointsEl) pointsEl.innerText = availablePoints;
+
+    // Progression de la barre d'XP (simulée de façon dynamique par le niveau)
+    const levelBar = document.getElementById('level-bar');
+    if (levelBar) {
+        let xpPercent = (currentLevel * 12) % 100;
+        if (xpPercent === 0) xpPercent = 15; // Pour éviter une barre vide
+        levelBar.style.width = `${xpPercent}%`;
+    }
 }

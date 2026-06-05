@@ -26,119 +26,150 @@
     <aside class="w-80 flex-shrink-0 border-r border-white/5 glass-panel hidden lg:flex flex-col py-6 z-40 overflow-hidden">
         <div class="px-6 mb-4 flex-shrink-0">
             <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.3em] mb-1">Système</p>
-            <h2 class="text-xs font-bold uppercase tracking-widest">Statistiques de Combat</h2>
+            <h2 class="text-xs font-bold uppercase tracking-widest text-[#a3855b]">Statistiques de Combat</h2>
         </div>
 
-        <!-- Zone Scrollable des 27 Stats (Cliquables pour filtrer l'inventaire) -->
-        <div class="flex-grow overflow-y-auto px-6 space-y-6 custom-scrollbar pb-6 uppercase font-bold">
+        <!-- Zone Scrollable des 27 Stats -->
+        <div class="flex-grow overflow-y-auto px-6 space-y-6 custom-scrollbar pb-6 uppercase font-bold text-[16px]">
             
-            <!-- OFFENSIF (12 Stats) -->
+            <!-- OFFENSIF (Cyan) -->
             <div class="space-y-2">
-                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1">Offensif</p>
-                <div class="space-y-1 tracking-wider">
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">swords</span>Dégâts d'attaque</span><span id="stat-deg_att">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">shield_with_house</span>Dégâts physiques</span><span id="stat-deg_phys">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">bolt</span>Bonus Dégâts Phys.</span><span id="stat-bonus_phys">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">air</span>Vitesse d'attaque</span><span id="stat-vit_att">0s</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">cyclone</span>Chance de critique</span><span id="stat-crit_chance">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">explosion</span>Dégâts critiques</span><span id="stat-crit_dmg">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">magic_button</span>Crit. Capacité</span><span id="stat-crit_comp_chance">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">electric_bolt</span>Dégâts Crit. Capa.</span><span id="stat-crit_comp_dmg">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>Dégâts magiques</span><span id="stat-deg_mag">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">near_me</span>Dégâts projectile</span><span id="stat-deg_proj">0</span></div>
-                    <div class="stat-row flex justify-between items-center text-red-500/50"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">motion_photos_on</span>Vampirisme</span><span id="stat-vamp">0%</span></div>
-                    <div class="stat-row flex justify-between items-center text-red-500/50"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">bloodtype</span>Vol de vie</span><span id="stat-lifesteal">0%</span></div>
+                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1 text-cyan-400">Offensif</p>
+                <div class="space-y-1.5 tracking-wider">
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">swords</span>Dégâts d'attaque</span><span id="stat-deg_att">0</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">shield_with_house</span>Dégâts physiques</span><span id="stat-deg_phys">0</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">bolt</span>Bonus Dégâts Phys.</span><span id="stat-bonus_phys">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">air</span>Vitesse d'attaque</span><span id="stat-vit_att">0s</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">cyclone</span>Chance de critique</span><span id="stat-crit_chance">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">explosion</span>Dégâts critiques</span><span id="stat-crit_dmg">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">magic_button</span>Crit. Capacité</span><span id="stat-crit_comp_chance">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">electric_bolt</span>Dégâts Crit. Capa.</span><span id="stat-crit_comp_dmg">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">auto_awesome</span>Dégâts magiques</span><span id="stat-deg_mag">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">near_me</span>Dégâts projectile</span><span id="stat-deg_proj">0</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">motion_photos_on</span>Vampirisme</span><span id="stat-vamp">0%</span></div>
+                    <div class="stat-row stat-row-cyan flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">bloodtype</span>Vol de vie</span><span id="stat-lifesteal">0%</span></div>
                 </div>
             </div>
 
-            <!-- DÉFENSIF (4 Stats) -->
+            <!-- DÉFENSIF (Or) -->
             <div class="space-y-2">
-                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1">Défensif</p>
-                <div class="space-y-1 tracking-wider">
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">shield</span>Défense brute</span><span id="stat-def">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">verified_user</span>Réduction dégâts</span><span id="stat-red_dmg">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">visibility_off</span>Esquive</span><span id="stat-esquive">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">gavel</span>Ténacité</span><span id="stat-tenacite">0</span></div>
+                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1 text-[#a3855b]">Défensif</p>
+                <div class="space-y-1.5 tracking-wider">
+                    <div class="stat-row stat-row-gold flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">shield</span>Défense brute</span><span id="stat-def">0</span></div>
+                    <div class="stat-row stat-row-gold flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">verified_user</span>Réduction dégâts</span><span id="stat-red_dmg">0%</span></div>
+                    <div class="stat-row stat-row-gold flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">visibility_off</span>Esquive</span><span id="stat-esquive">0%</span></div>
+                    <div class="stat-row stat-row-gold flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">gavel</span>Ténacité</span><span id="stat-tenacite">0</span></div>
                 </div>
             </div>
 
-            <!-- VITALITÉ (7 Stats) -->
+            <!-- VITALITÉ (Rouge) -->
             <div class="space-y-2">
-                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1">Vitalité</p>
-                <div class="space-y-1 tracking-wider">
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">favorite</span>Santé (HP)</span><span id="stat-hp">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">vital_signs</span>Régén. Santé</span><span id="stat-reg_hp">0/s</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">diamond</span>Mana Max</span><span id="stat-mana">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">shutter_speed</span>Régén. Mana</span><span id="stat-reg_mana">0/s</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">eco</span>Stamina Max</span><span id="stat-stamina">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">energy_savings_leaf</span>Régén. Stamina</span><span id="stat-reg_stam">0/s</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">add_box</span>Soin Bonus</span><span id="stat-heal_bonus">0</span></div>
+                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1 text-red-500">Vitalité</p>
+                <div class="space-y-1.5 tracking-wider">
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">favorite</span>Santé (HP)</span><span id="stat-hp">0</span></div>
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">vital_signs</span>Régén. Santé</span><span id="stat-reg_hp">0/s</span></div>
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">diamond</span>Mana Max</span><span id="stat-mana">0</span></div>
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">shutter_speed</span>Régén. Mana</span><span id="stat-reg_mana">0/s</span></div>
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">eco</span>Stamina Max</span><span id="stat-stamina">0</span></div>
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">energy_savings_leaf</span>Régén. Stamina</span><span id="stat-reg_stam">0/s</span></div>
+                    <div class="stat-row stat-row-red flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">add_box</span>Soin Bonus</span><span id="stat-heal_bonus">0</span></div>
                 </div>
             </div>
 
-            <!-- UTILITÉ (4 Stats) -->
+            <!-- UTILITÉ & PROGRÈS (Violet) -->
             <div class="space-y-2">
-                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1">Utilité & Progrès</p>
-                <div class="space-y-1 tracking-wider">
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">flare</span>Dégâts capacité</span><span id="stat-dmg_cap">0</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">progress_activity</span>Récupération</span><span id="stat-cdr">0%</span></div>
-                    <div class="stat-row flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">directions_run</span>Vitesse</span><span id="stat-speed">0</span></div>
-                    <div class="stat-row flex justify-between items-center text-yellow-500/50"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">auto_fix_high</span>Butin Magique</span><span id="stat-magic_find">0%</span></div>
-                    <div class="stat-row flex justify-between items-center text-cyan-400/50"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">keyboard_double_arrow_up</span>Bonus XP</span><span id="stat-bonus_xp">0%</span></div>
+                <p class="text-[9px] opacity-20 uppercase border-b border-white/5 pb-1 text-purple-400">Utilité & Progrès</p>
+                <div class="space-y-1.5 tracking-wider">
+                    <div class="stat-row stat-row-purple flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">flare</span>Dégâts capacité</span><span id="stat-dmg_cap">0</span></div>
+                    <div class="stat-row stat-row-purple flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">progress_activity</span>Récupération</span><span id="stat-cdr">0%</span></div>
+                    <div class="stat-row stat-row-purple flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">directions_run</span>Vitesse</span><span id="stat-speed">0</span></div>
+                    <div class="stat-row stat-row-purple flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">auto_fix_high</span>Butin Magique</span><span id="stat-magic_find">0%</span></div>
+                    <div class="stat-row stat-row-purple flex justify-between items-center"><span class="stat-label flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">keyboard_double_arrow_up</span>Bonus XP</span><span id="stat-bonus_xp">0%</span></div>
                 </div>
             </div>
         </div>
 
         <!-- ================= SECTION ATTRIBUTS ================= -->
         <div class="px-6 pt-4 border-t border-white/5 flex-shrink-0 bg-black/40">
-            <div class="flex justify-between items-center mb-3">
-                <p class="text-[9px] font-black uppercase">Points de Bénédiction</p>
-                <p class="text-[10px] font-bold text-white uppercase"><span id="points-available">0</span></p>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-[10px] font-black tracking-widest uppercase text-[#a3855b]">Attributs</h3>
+                <p class="text-[10px] font-black uppercase text-[#a3855b]">Points : <span id="points-available" class="text-white">0</span></p>
             </div>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-4 pb-4">
-                <!-- Grille des 6 attributs -->
-                <div class="space-y-1">
-                    <div class="flex justify-between text-[8px] opacity-40 uppercase"><span>Force</span><span id="val-force" class="text-white">0</span></div>
-                    <div class="flex gap-2">
-                        <button onclick="changeAttribute('force', -1)" class="attr-btn">-</button>
-                        <button onclick="changeAttribute('force', 1)" class="attr-btn">+</button>
+            
+            <div class="grid grid-cols-2 gap-x-6 gap-y-4 pb-4 font-bold text-[8px]">
+                
+                <!-- FORCE (Cyan) -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider">
+                        <span class="text-cyan-400">Force</span>
+                        <span id="val-force" class="text-[#a3855b]">0</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="changeAttribute('force', -1)" class="attr-btn-teal">-</button>
+                        <button onclick="changeAttribute('force', 1)" class="attr-btn-teal">+</button>
                     </div>
                 </div>
-                <div class="space-y-1">
-                    <div class="flex justify-between text-[8px] opacity-40 uppercase"><span>Dextérité</span><span id="val-dex" class="text-white">0</span></div>
-                    <div class="flex gap-2">
-                        <button onclick="changeAttribute('dex', -1)" class="attr-btn">-</button>
-                        <button onclick="changeAttribute('dex', 1)" class="attr-btn">+</button>
+
+                <!-- INT. (Cyan) -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider">
+                        <span class="text-cyan-400">Int.</span>
+                        <span id="val-int" class="text-[#a3855b]">0</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="changeAttribute('int', -1)" class="attr-btn-teal">-</button>
+                        <button onclick="changeAttribute('int', 1)" class="attr-btn-teal">+</button>
                     </div>
                 </div>
-                <div class="space-y-1">
-                    <div class="flex justify-between text-[8px] opacity-40 uppercase"><span>Intelligence</span><span id="val-int" class="text-white">0</span></div>
-                    <div class="flex gap-2">
-                        <button onclick="changeAttribute('int', -1)" class="attr-btn">-</button>
-                        <button onclick="changeAttribute('int', 1)" class="attr-btn">+</button>
+
+                <!-- DEX. (Cyan) -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider">
+                        <span class="text-cyan-400">Dex.</span>
+                        <span id="val-dex" class="text-[#a3855b]">0</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="changeAttribute('dex', -1)" class="attr-btn-teal">-</button>
+                        <button onclick="changeAttribute('dex', 1)" class="attr-btn-teal">+</button>
                     </div>
                 </div>
-                <div class="space-y-1">
-                    <div class="flex justify-between text-[8px] opacity-40 uppercase"><span>Esprit</span><span id="val-esp" class="text-white">0</span></div>
-                    <div class="flex gap-2">
-                        <button onclick="changeAttribute('esp', -1)" class="attr-btn">-</button>
-                        <button onclick="changeAttribute('esp', 1)" class="attr-btn">+</button>
+
+                <!-- ESPRIT (Cyan) -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider">
+                        <span class="text-cyan-400">Esprit</span>
+                        <span id="val-esp" class="text-[#a3855b]">0</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="changeAttribute('esp', -1)" class="attr-btn-teal">-</button>
+                        <button onclick="changeAttribute('esp', 1)" class="attr-btn-teal">+</button>
                     </div>
                 </div>
-                <div class="space-y-1 border-t border-white/5 pt-2">
-                    <div class="flex justify-between text-[8px] opacity-40 uppercase"><span>Résistance</span><span id="val-def_base" class="text-white">0</span></div>
-                    <div class="flex gap-2">
-                        <button onclick="changeAttribute('def_base', -1)" class="attr-btn">-</button>
-                        <button onclick="changeAttribute('def_base', 1)" class="attr-btn">+</button>
+
+                <!-- DÉFENSE (Or) -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider">
+                        <span class="text-[#a3855b]">Défense</span>
+                        <span id="val-def_base" class="text-[#a3855b]">0</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="changeAttribute('def_base', -1)" class="attr-btn-gold">-</button>
+                        <button onclick="changeAttribute('def_base', 1)" class="attr-btn-gold">+</button>
                     </div>
                 </div>
-                <div class="space-y-1 border-t border-white/5 pt-2">
-                    <div class="flex justify-between text-[8px] opacity-40 uppercase"><span>Vitalité</span><span id="val-vit_base" class="text-white">0</span></div>
-                    <div class="flex gap-2">
-                        <button onclick="changeAttribute('vit_base', -1)" class="attr-btn">-</button>
-                        <button onclick="changeAttribute('vit_base', 1)" class="attr-btn">+</button>
+
+                <!-- VITALITÉ (Rouge) -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider">
+                        <span class="text-red-500">Vitalité</span>
+                        <span id="val-vit_base" class="text-[#a3855b]">0</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="changeAttribute('vit_base', -1)" class="attr-btn-red">-</button>
+                        <button onclick="changeAttribute('vit_base', 1)" class="attr-btn-red">+</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </aside>
@@ -148,11 +179,11 @@
         
         <!-- SÉLECTEUR DE BUILD (1-5) -->
         <div class="flex gap-10 mb-12 text-[10px] tracking-[0.4em] font-bold opacity-30">
-            <button data-build="1" class="text-white opacity-100 border-b border-white pb-2 transition-all">I</button>
-            <button data-build="2" class="hover:opacity-100 transition-all">II</button>
-            <button data-build="3" class="hover:opacity-100 transition-all">III</button>
-            <button data-build="4" class="hover:opacity-100 transition-all">IV</button>
-            <button data-build="5" class="hover:opacity-100 transition-all">V</button>
+            <button data-build="1" class="text-white opacity-100 border-b border-white pb-2 transition-all">1</button>
+            <button data-build="2" class="hover:opacity-100 transition-all">2</button>
+            <button data-build="3" class="hover:opacity-100 transition-all">3</button>
+            <button data-build="4" class="hover:opacity-100 transition-all">4</button>
+            <button data-build="5" class="hover:opacity-100 transition-all">5</button>
         </div>
 
         <!-- GRILLE D'ÉQUIPEMENT -->
@@ -170,13 +201,18 @@
             <!-- CENTRE (ARCHE DU GUERRIER) -->
             <div class="flex flex-col items-center">
                 <div class="h-[520px] w-80 relative flex items-center justify-center overflow-hidden">
-                    <div class="absolute inset-0 bg-white/[0.01] rounded-full blur-3xl"></div>
-                    <img src="../assets/images/frr-kayou.png" class="h-full object-contain filter grayscale-[0.2] brightness-90" draggable="false">
-                    
-                    <!-- NIVEAU OVERLAY -->
-                    <div class="absolute bottom-6 flex flex-col items-center">
-                        <h2 class="medieval-title text-5xl font-light tracking-[0.6em]"><span id="player-level">1</span></h2>
+                <div class="absolute bottom-6 flex flex-col items-center gap-1 z-30">
+                    <div class="flex items-center gap-4">
+                        <!-- Bouton Moins -->
+                        <button onclick="changeLevel(-1)" class="attr-btn !w-6 !h-6 flex items-center justify-center font-bold text-xs" title="Réduire le niveau">-</button>
+                        
+                        <h2 class="medieval-title text-5xl font-light tracking-[0.4em] translate-x-[0.2em]"><span id="player-level">1</span></h2>
+                        
+                        <!-- Bouton Plus -->
+                        <button onclick="changeLevel(1)" class="attr-btn !w-6 !h-6 flex items-center justify-center font-bold text-xs" title="Augmenter le niveau">+</button>
                     </div>
+                    <p class="text-[8px] uppercase tracking-[0.3em] text-[#a3855b] opacity-60">Niveau</p>
+                </div>
                 </div>
                 <!-- ARTEFACTS (3 SLOTS) -->
                 <div class="flex justify-center gap-4 mt-8">
@@ -234,9 +270,9 @@
             <p class="text-[8px] uppercase opacity-20 mb-3 tracking-[0.2em]">Palier d'Évolution</p>
             <div id="palier-filter-group" class="flex gap-2">
                 <button data-palier="ALL" class="filter-btn flex-grow py-2 active">Tous</button>
-                <button data-palier="1" class="filter-btn flex-grow py-2">Tier I</button>
-                <button data-palier="2" class="filter-btn flex-grow py-2">Tier II</button>
-                <button data-palier="3" class="filter-btn flex-grow py-2">Tier III</button>
+                <button data-palier="1" class="filter-btn flex-grow py-2">Palier I</button>
+                <button data-palier="2" class="filter-btn flex-grow py-2">Palier II</button>
+                <button data-palier="3" class="filter-btn flex-grow py-2">Palier III</button>
             </div>
         </div>
 

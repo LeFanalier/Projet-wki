@@ -14,9 +14,9 @@
     --gold-glow: rgba(163, 133, 91, 0.15);
     
     /* Couleurs de Fond */
-    --bg-dark: #030508;
-    --bg-center: #080c14;
-    --panel-bg: rgba(6, 10, 15, 0.98);
+    --bg-dark: #02070b;
+    --bg-center: #051522; 
+    --panel-bg: rgba(44, 53, 20, 0.98);
 
     /* Couleurs de Rareté */
     --color-commun: #9d9d9d;
@@ -46,7 +46,7 @@ body {
     font-family: 'EB Garamond', serif;
     margin: 0;
     overflow: hidden; /* Fix du scroll global */
-    min-height: screen;
+    min-height: 100vh;
 }
 
 /* 4. TYPOGRAPHIE ET TITRES */
@@ -70,14 +70,21 @@ h1, h2, h3, .medieval-title, .font-bold.uppercase {
 
 /* 5. FORMULAIRES ET INPUTS */
 #search-item {
-    background: rgba(0, 0, 0, 0.6) !important;
-    border: 1px solid var(--gold-dim) !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
     color: var(--gold-bright) !important;
     padding: 10px 12px 10px 35px !important;
     outline: none !important;
     font-family: 'EB Garamond', serif;
     font-style: italic;
     width: 100%;
+    transition: all 0.25s ease;
+}
+
+#search-item:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 8px rgba(163, 133, 91, 0.2);
+    background: rgba(0, 0, 0, 0.5) !important;
 }
 
 select {
@@ -120,27 +127,55 @@ select {
     background: rgba(163, 133, 91, 0.05);
 }
 
-/* Boutons d'attributs */
-.attr-btn {
-    border: 1px solid var(--gold-dim) !important;
-    color: var(--gold) !important;
-    background: rgba(163, 133, 91, 0.05) !important;
-    width: 24px;
-    height: 20px;
+/* 7. BOUTONS D'ATTRIBUTS (NOUVELLES DIMENSIONS) */
+.attr-btn-teal, .attr-btn-gold, .attr-btn-red {
+    border: 1px solid transparent;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.25s ease;
+    background: rgba(0, 0, 0, 0.3);
 }
 
-.attr-btn:hover {
-    background: var(--gold) !important;
-    color: white !important;
+/* Version Cyan (Force, Dex, Int, Esprit) */
+.attr-btn-teal {
+    border-color: rgba(6, 182, 212, 0.2) !important;
+    color: #22d3ee !important;
+}
+.attr-btn-teal:hover {
+    background: rgba(6, 182, 212, 0.12) !important;
+    border-color: #22d3ee !important;
+    box-shadow: 0 0 6px rgba(6, 182, 212, 0.2);
 }
 
-/* 7. SYSTÈME DE RARETÉ (BORDURES ET GLOWS) */
-/* Ces styles sont forcés pour l'inventaire et les slots équipés */
+/* Version Or (Défense) */
+.attr-btn-gold {
+    border-color: var(--gold-dim) !important;
+    color: var(--gold) !important;
+}
+.attr-btn-gold:hover {
+    background: rgba(163, 133, 91, 0.12) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 6px rgba(163, 133, 91, 0.2);
+}
+
+/* Version Rouge (Vitalité) */
+.attr-btn-red {
+    border-color: rgba(239, 68, 68, 0.2) !important;
+    color: #f87171 !important;
+}
+.attr-btn-red:hover {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.2);
+}
+
+/* 8. SYSTÈME DE RARETÉ (BORDURES ET GLOWS CODES) */
 .border-rarity-commun { border: 2px solid var(--color-commun) !important; }
 .border-rarity-rare { border: 2px solid var(--color-rare) !important; }
 .border-rarity-epique { border: 2px solid var(--color-epique) !important; }
@@ -149,7 +184,6 @@ select {
 .border-rarity-godlike { border: 2px solid var(--color-godlike) !important; }
 .border-rarity-event { border: 2px solid var(--color-event) !important; }
 
-/* Textes de rareté */
 .text-rarity-commun { color: var(--color-commun) !important; }
 .text-rarity-rare { color: var(--color-rare) !important; }
 .text-rarity-epique { color: var(--color-epique) !important; }
@@ -167,42 +201,132 @@ select {
     to { opacity: 1; filter: brightness(1.3); }
 }
 
-/* 8. FILTRAGE PAR STATS (MENU GAUCHE) */
+/* 9. FILTRAGE PAR STATS & LIGNES DE STATS INTERACTIVES (GAUCHE) */
 .stat-row {
-    cursor: pointer;
+    padding: 10px 14px;
+    border-left: 3px solid transparent !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
     transition: all 0.2s ease;
-    border-left: 2px solid transparent;
+    cursor: pointer;
+    font-size: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.stat-row:hover {
-    background: rgba(163, 133, 91, 0.05);
+.stat-row .stat-label .material-symbols-outlined {
+    font-size: 16px !important;
+    margin-right: 4px;
 }
 
-.stat-row.active-filter {
-    background: rgba(163, 133, 91, 0.15) !important;
-    border-left: 2px solid var(--gold) !important;
-    padding-left: 4px;
+/* Hover et Active par catégorie */
+.stat-row-cyan:hover {
+    background: rgba(6, 182, 212, 0.05) !important;
+    border-left-color: #22d3ee !important;
+}
+.stat-row-cyan.active-filter {
+    background: rgba(6, 182, 212, 0.12) !important;
+    border-left-color: #22d3ee !important;
+    box-shadow: inset 3px 0 0 #22d3ee;
+}
+.stat-row-cyan .stat-label span {
+    color: #22d3ee !important;
 }
 
-/* 9. BOUTONS DE FILTRE (DROITE) */
+.stat-row-gold:hover {
+    background: rgba(163, 133, 91, 0.05) !important;
+    border-left-color: var(--gold) !important;
+}
+.stat-row-gold.active-filter {
+    background: rgba(163, 133, 91, 0.12) !important;
+    border-left-color: var(--gold) !important;
+    box-shadow: inset 3px 0 0 var(--gold);
+}
+.stat-row-gold .stat-label span {
+    color: var(--gold) !important;
+}
+
+.stat-row-red:hover {
+    background: rgba(239, 68, 68, 0.05) !important;
+    border-left-color: #ef4444 !important;
+}
+.stat-row-red.active-filter {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-left-color: #ef4444 !important;
+    box-shadow: inset 3px 0 0 #ef4444;
+}
+.stat-row-red .stat-label span {
+    color: #ef4444 !important;
+}
+
+.stat-row-purple:hover {
+    background: rgba(168, 85, 247, 0.05) !important;
+    border-left-color: #a855f7 !important;
+}
+.stat-row-purple.active-filter {
+    background: rgba(168, 85, 247, 0.12) !important;
+    border-left-color: #a855f7 !important;
+    box-shadow: inset 3px 0 0 #a855f7;
+}
+.stat-row-purple .stat-label span {
+    color: #a855f7 !important;
+}
+
+/* 10. BOUTONS DE FILTRE UNIFIÉS (DROITE - NOUVELLES DIMENSIONS) */
 .filter-btn {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--gold-dim);
-    color: var(--gold-bright);
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--gold-bright) !important;
     font-family: 'Cinzel', serif;
-    font-size: 8px;
+    font-size: 10px;
     text-transform: uppercase;
-    transition: all 0.2s;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
-.filter-btn:hover, .filter-btn.active {
-    background: var(--gold-dim);
+/* Comportement dynamique par rareté (Bordures & Halos) */
+.filter-btn[data-rarity="ALL"] { border-color: var(--gold-dim) !important; color: var(--gold-bright) !important; }
+.filter-btn[data-rarity="ALL"]:hover, .filter-btn[data-rarity="ALL"].active { border-color: var(--gold) !important; background: rgba(163, 133, 91, 0.12) !important; box-shadow: 0 0 8px rgba(163, 133, 91, 0.25); }
+
+.filter-btn[data-rarity="COMMUN"] { border-color: rgba(157, 157, 157, 0.15) !important; color: var(--color-commun) !important; }
+.filter-btn[data-rarity="COMMUN"]:hover, .filter-btn[data-rarity="COMMUN"].active { border-color: var(--color-commun) !important; background: rgba(157, 157, 157, 0.1) !important; box-shadow: 0 0 8px rgba(157, 157, 157, 0.2); }
+
+.filter-btn[data-rarity="RARE"] { border-color: rgba(59, 130, 246, 0.15) !important; color: var(--color-rare) !important; }
+.filter-btn[data-rarity="RARE"]:hover, .filter-btn[data-rarity="RARE"].active { border-color: var(--color-rare) !important; background: rgba(59, 130, 246, 0.1) !important; box-shadow: 0 0 8px rgba(59, 130, 246, 0.2); }
+
+.filter-btn[data-rarity="ÉPIQUE"] { border-color: rgba(168, 85, 247, 0.15) !important; color: var(--color-epique) !important; }
+.filter-btn[data-rarity="ÉPIQUE"]:hover, .filter-btn[data-rarity="ÉPIQUE"].active { border-color: var(--color-epique) !important; background: rgba(168, 85, 247, 0.1) !important; box-shadow: 0 0 8px rgba(168, 85, 247, 0.2); }
+
+.filter-btn[data-rarity="LÉGENDAIRE"] { border-color: rgba(234, 179, 8, 0.15) !important; color: var(--color-legendaire) !important; }
+.filter-btn[data-rarity="LÉGENDAIRE"]:hover, .filter-btn[data-rarity="LÉGENDAIRE"].active { border-color: var(--color-legendaire) !important; background: rgba(234, 179, 8, 0.1) !important; box-shadow: 0 0 8px rgba(234, 179, 8, 0.2); }
+
+.filter-btn[data-rarity="MYTHIQUE"] { border-color: rgba(216, 180, 254, 0.15) !important; color: var(--color-mythique) !important; }
+.filter-btn[data-rarity="MYTHIQUE"]:hover, .filter-btn[data-rarity="MYTHIQUE"].active { border-color: var(--color-mythique) !important; background: rgba(216, 180, 254, 0.1) !important; box-shadow: 0 0 8px rgba(216, 180, 254, 0.2); }
+
+.filter-btn[data-rarity="GODLIKE"] { border-color: rgba(239, 68, 68, 0.15) !important; color: var(--color-godlike) !important; }
+.filter-btn[data-rarity="GODLIKE"]:hover, .filter-btn[data-rarity="GODLIKE"].active { border-color: var(--color-godlike) !important; background: rgba(239, 68, 68, 0.1) !important; box-shadow: 0 0 8px rgba(239, 68, 68, 0.2); }
+
+.filter-btn[data-rarity="EVENT"] { border-color: rgba(30, 215, 96, 0.15) !important; color: var(--color-event) !important; }
+.filter-btn[data-rarity="EVENT"]:hover, .filter-btn[data-rarity="EVENT"].active { border-color: var(--color-event) !important; background: rgba(30, 215, 96, 0.1) !important; box-shadow: 0 0 8px rgba(30, 215, 96, 0.2); }
+
+/* Filtres de Paliers d'Évolution (Or) */
+#palier-filter-group .filter-btn {
+    border-color: var(--gold-dim) !important;
+    color: var(--gold-bright) !important;
+}
+#palier-filter-group .filter-btn:hover, #palier-filter-group .filter-btn.active {
     border-color: var(--gold) !important;
-    color: white;
-    box-shadow: 0 0 10px var(--gold-dim);
+    background: rgba(163, 133, 91, 0.12) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(163, 133, 91, 0.2);
 }
 
-/* 10. DÉCORATIONS ET SCROLLBAR */
+/* 11. DÉCORATIONS, SCROLLBARS & EFFETS */
 #level-bar {
     background: var(--gold) !important;
     box-shadow: 0 0 12px var(--gold-glow);
@@ -246,4 +370,62 @@ select {
 .grid-cols-2 {
     border-top: 1px solid rgba(163, 133, 91, 0.1);
     padding-top: 4px;
+}
+
+/* 12. BARRES LATÉRALES - SYNCHRONISATION HEADER */
+aside.glass-panel {
+    background: rgba(3, 5, 8, 0.8) !important; /* Même fond que bg-background/80 */
+    backdrop-filter: blur(24px) !important;    /* Même effet que backdrop-blur-xl */
+    -webkit-backdrop-filter: blur(24px) !important; /* Compatibilité Safari */
+}
+/* ============================================================
+   AJOUTS & CORRECTIONS D'INTERFACE
+   ============================================================ */
+
+/* --- Piste 1 : Slot équipé sélectionné actif (Halo) --- */
+.active-slot-selection {
+    border-color: var(--gold) !important;
+    background: rgba(163, 133, 91, 0.12) !important;
+    box-shadow: 0 0 14px rgba(163, 133, 91, 0.5) !important;
+    animation: active-slot-pulse 1.5s infinite alternate ease-in-out !important;
+}
+@keyframes active-slot-pulse {
+    from { box-shadow: 0 0 6px rgba(163, 133, 91, 0.3); }
+    to { box-shadow: 0 0 16px rgba(163, 133, 91, 0.6); }
+}
+
+/* --- Piste 3 : Onglets de Build modernisés --- */
+.build-tab {
+    border: 1px solid var(--gold-dim) !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    color: var(--gold-bright) !important;
+    padding: 6px 16px;
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.build-tab:hover {
+    border-color: var(--gold) !important;
+    color: white !important;
+}
+.build-tab.active {
+    background: rgba(163, 133, 91, 0.12) !important;
+    border-color: var(--gold) !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(163, 133, 91, 0.25);
+}
+
+/* --- Piste 5 : Scrollbars invisibles par défaut, visibles au survol --- */
+.overflow-y-auto, .custom-scrollbar {
+    scrollbar-width: none !important; /* Pour Firefox */
+    -ms-overflow-style: none !important; /* Pour IE et Edge Legacy */
+}
+
+.overflow-y-auto::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar {
+    display: none !important; /* Pour Chrome, Safari, Opera et Edge Chromium */
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
 }
