@@ -239,6 +239,8 @@ function refreshVisualSlots() {
 // --- 5. INTERACTIONS SLOTS ---
 function setupSlotInteractions() {
     document.querySelectorAll('[data-slot]').forEach(slot => {
+        
+        // 1. CLIC GAUCHE : Sélectionner le slot et filtrer l'inventaire
         slot.addEventListener('click', () => {
             // Nettoie l'ancien slot actif
             document.querySelectorAll('[data-slot]').forEach(s => {
@@ -259,6 +261,26 @@ function setupSlotInteractions() {
             }
             applyAllFilters();
         });
+
+        // 2. CLIC DROIT : Déséquiper l'objet du slot
+        slot.addEventListener('contextmenu', (e) => {
+            e.preventDefault(); // Empêche le menu contextuel classique du navigateur d'apparaître
+            
+            const slotName = slot.getAttribute('data-slot');
+            
+            // Si un objet est équipé dans ce slot pour le build actif, on le retire
+            if (builds && builds[activeBuildIndex] && builds[activeBuildIndex][slotName]) {
+                builds[activeBuildIndex][slotName] = null; // Supprime l'objet du build
+                
+                refreshVisualSlots(); // Actualise l'affichage (remet l'icône par défaut et recalcule les stats)
+
+                // Si le slot qu'on vient de déséquiper était celui sélectionné, on rafraîchit la liste d'objets
+                if (selectedSlot === slotName) {
+                    applyAllFilters();
+                }
+            }
+        });
+
     });
 }
 

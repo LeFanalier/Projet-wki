@@ -452,3 +452,21 @@ aside.glass-panel {
     border-bottom-color: var(--gold) !important; /* Ligne dorée active au-dessous */
     text-shadow: 0 0 8px var(--gold-glow);
 }
+/* --- Alignement de la bordure du header sur le thème or des barres latérales --- */
+header {
+    border-bottom: 1px solid var(--gold-dim) !important;
+}
+
+/* Force les clics (gauche/droit) à cibler directement le slot, même en cliquant sur l'image ou l'icône */
+[data-slot] * {
+    pointer-events: none !important;
+}
+/* --- Harmonisation dorée de l'avatar hexagonal dans le header --- */
+header .hexagon-clip {
+    background-color: rgba(163, 133, 91, 0.2) !important; /* Remplace le cyan par du doré (var(--gold-dim)) */
+}
+
+#logout-btn:hover {
+    background-color: var(--gold) !important; /* Devient or vif lors du survol de déconnexion */
+    box-shadow: 0 0 10px rgba(163, 133, 91, 0.4);
+}

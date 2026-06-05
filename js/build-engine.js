@@ -17,7 +17,7 @@ function updateFinalStats() {
     
     // 1. STATS DE BASE (Niveau + Attributs)
     let totals = {
-        hp: 19 + lvl + (playerAttributes.vit_base * 3), 
+        hp: 19 + lvl + (playerAttributes.vit_base * 1), 
         reg_hp: playerAttributes.esp * 0.15,
         mana: 0, 
         reg_mana: playerAttributes.esp * 0.1,
