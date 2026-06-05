@@ -9,25 +9,23 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // LOGIQUE D'AUTHENTIFICATION DISCORD VIA SUPABASE
 // ============================================================
 
-// Fonction de redirection vers la page d'autorisation de Discord
+// Fonction de redirection vers la page d'autorisation de Discord (Intelligente)
 async function signInWithDiscord() {
     if (typeof supabaseClient === 'undefined') return;
+
+    // Détection automatique de l'adresse de redirection selon l'hébergement
+    const isGitHubPages = window.location.origin.includes('github.io');
+    const redirectTarget = isGitHubPages 
+        ? 'https://lefanalier.github.io/Projet-wki/pages/stuff.html' // URL de production sur GitHub
+        : window.location.origin + '/pages/stuff.html'; // URL locale en développement
+
     const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'discord',
         options: {
-            // Redirige l'utilisateur vers votre calculateur après authentification
-            redirectTo: window.location.origin + '/pages/stuff.html' 
+            redirectTo: redirectTarget
         }
     });
     if (error) console.error("Erreur de connexion Discord :", error.message);
-}
-
-// Fonction de déconnexion de la session
-async function signOut() {
-    if (typeof supabaseClient === 'undefined') return;
-    const { error } = await supabaseClient.auth.signOut();
-    if (error) console.error("Erreur de déconnexion :", error.message);
-    else window.location.reload(); // Recharge la page pour nettoyer la session
 }
 
 // Fonction pour rafraîchir l'interface utilisateur du Header
