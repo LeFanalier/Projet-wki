@@ -9,15 +9,15 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // LOGIQUE D'AUTHENTIFICATION DISCORD VIA SUPABASE
 // ============================================================
 
-// Fonction de redirection vers la page d'autorisation de Discord (Intelligente)
+// Fonction de redirection vers la page d'autorisation de Discord 
 async function signInWithDiscord() {
     if (typeof supabaseClient === 'undefined') return;
 
     // Détection automatique de l'adresse de redirection selon l'hébergement
     const isGitHubPages = window.location.origin.includes('github.io');
     const redirectTarget = isGitHubPages 
-        ? 'https://lefanalier.github.io/Projet-wki/pages/stuff.html' // URL de production sur GitHub
-        : window.location.origin + '/pages/stuff.html'; // URL locale en développement
+        ? 'https://lefanalier.github.io/Projet-wki/pages/stuff.html' 
+        : window.location.origin + '/pages/stuff.html'; 
 
     const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'discord',
