@@ -5,6 +5,7 @@
 let selectedSlot = null;
 let allItems = [];
 let activeBuildIndex = 0;
+let skinViewer = null;
 
 let filters = {
     search: "",
@@ -55,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSlotInteractions();
     setupStatRowFilters();
     setupBuildSwitch();
-    initLevelSystem(); // Lancement du système de niveau interactif
+    initLevelSystem(); 
+    init3dSkinViewer(); // <-- Initialise le personnage Minecraft en 3D
 });
 
 function setupFilters() {
@@ -139,26 +141,25 @@ function renderInventory(items) {
         const color = rarityColors[rarity] || '#9d9d9d';
 
         let statsHtml = '<div class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">';
-                if (item.stats) {
-                    Object.entries(item.stats).forEach(([statName, value]) => {
-                        if (value > 0) {
-                            const icon = statIcons[statName] || 'add';
-                            const label = statLabels[statName] || statName;
-                            const isPercent = ['crit_chance', 'crit_dmg', 'crit_comp_chance', 'crit_comp_dmg', 'vamp', 'lifesteal', 'red_dmg', 'esquive', 'cdr', 'deg_mag', 'bonus_phys', 'magic_find', 'bonus_xp'].includes(statName);
-                            
-                            // Rendu amélioré avec fond contrasté noir, icône cyan, libellé blanc net et valeur dorée
-                            statsHtml += `
-                                <div class="flex items-center justify-between bg-black/50 px-2 py-1.5 rounded" style="border: 1px solid rgba(163, 133, 91, 0.15)">
-                                    <div class="flex items-center gap-1.5 overflow-hidden">
-                                        <span class="material-symbols-outlined text-[11px] text-cyan-400 opacity-90">${icon}</span>
-                                        <span class="text-[8px] uppercase text-white/80 tracking-wider font-semibold truncate">${label}</span>
-                                    </div>
-                                    <span class="text-[10px] font-black" style="color: var(--gold-bright)">${value}${isPercent ? '%' : ''}</span>
-                                </div>`;
-                        }
-                    });
+        if (item.stats) {
+            Object.entries(item.stats).forEach(([statName, value]) => {
+                if (value > 0) {
+                    const icon = statIcons[statName] || 'add';
+                    const label = statLabels[statName] || statName;
+                    const isPercent = ['crit_chance', 'crit_dmg', 'crit_comp_chance', 'crit_comp_dmg', 'vamp', 'lifesteal', 'red_dmg', 'esquive', 'cdr', 'deg_mag', 'bonus_phys', 'magic_find', 'bonus_xp'].includes(statName);
+                    
+                    statsHtml += `
+                        <div class="flex items-center justify-between bg-black/50 px-2 py-1.5 rounded" style="border: 1px solid rgba(163, 133, 91, 0.15)">
+                            <div class="flex items-center gap-1.5 overflow-hidden">
+                                <span class="material-symbols-outlined text-[11px] text-cyan-400 opacity-90">${icon}</span>
+                                <span class="text-[8px] uppercase text-white/80 tracking-wider font-semibold truncate">${label}</span>
+                            </div>
+                            <span class="text-[10px] font-black" style="color: var(--gold-bright)">${value}${isPercent ? '%' : ''}</span>
+                        </div>`;
                 }
-                statsHtml += '</div>';
+            });
+        }
+        statsHtml += '</div>';
 
         const card = document.createElement('div');
         card.className = `group cursor-pointer bg-white/[0.01] border-l-2 p-3 hover:bg-white/[0.04] transition-all relative overflow-hidden mb-2`;
@@ -176,7 +177,7 @@ function renderInventory(items) {
                         <span class="text-[6px] font-black uppercase px-1 border" style="color: ${color}; border-color: ${color}">${item.rarete}</span>
                     </div>
                     <div class="flex gap-3 text-[7px] opacity-30 uppercase font-bold mb-1">
-                        <span>${item.emplacement}</span><span>Tier ${item.palier || 1}</span>
+                        <span>${item.emplacement}</span><span>Palier ${item.palier || 1}</span>
                     </div>
                     ${statsHtml}
                 </div>
@@ -223,7 +224,16 @@ function refreshVisualSlots() {
             slotEl.style.border = "1px solid rgba(255,255,255,0.1)";
         }
     });
-    if (typeof updateFinalStats === "function") updateFinalStats();
+
+    // Recalcule les statistiques finales de combat
+    if (typeof updateFinalStats === "function") {
+        updateFinalStats();
+    }
+
+    // Force la réapplication de notre niveau interactif après le calcul
+    if (typeof updateLevelUI === "function") {
+        updateLevelUI();
+    }
 }
 
 // --- 5. INTERACTIONS SLOTS ---
@@ -267,7 +277,9 @@ function setupBuildSwitch() {
     document.querySelectorAll('[data-build]').forEach((btn, i) => {
         btn.addEventListener('click', () => {
             activeBuildIndex = i;
+            // Supprime l'état actif de tous les boutons de builds
             document.querySelectorAll('[data-build]').forEach(b => b.classList.remove('active'));
+            // Ajoute l'état actif sur le bouton cliqué (géré en CSS)
             btn.classList.add('active');
             refreshVisualSlots();
         });
@@ -295,6 +307,7 @@ function resetAllFilters() {
     
     clearSlotFilter();
 }
+
 // --- 8. SYSTÈME DE NIVEAUX & ATTRIBUTION DE POINTS ---
 let currentLevel = 1;
 let availablePoints = 0;
@@ -317,7 +330,7 @@ function changeLevel(amount) {
     
     // Chaque montée de niveau octroie +5 Points de Bénédiction.
     // Chaque baisse de niveau retire 5 points (sans descendre sous 0).
-    if (amount > 1) {
+    if (amount > 0) {
         availablePoints += amount * 1;
     } else {
         availablePoints = Math.max(0, availablePoints + (amount * 1));
@@ -341,5 +354,54 @@ function updateLevelUI() {
         let xpPercent = (currentLevel * 12) % 100;
         if (xpPercent === 0) xpPercent = 15; // Pour éviter une barre vide
         levelBar.style.width = `${xpPercent}%`;
+    }
+}
+// --- 9. VISUALISEUR 3D MINECRAFT ANIMÉ & INTERACTIF (CORRIGÉ) ---
+function init3dSkinViewer() {
+    const canvasElement = document.getElementById("skin_container");
+    if (!canvasElement) return;
+
+    // Initialisation globale robuste pour éviter tout problème de portée
+    window.skinViewer = new skinview3d.SkinViewer({
+        canvas: canvasElement,
+        width: 320,
+        height: 520,
+        alpha: true, // Fond transparent
+        skin: "../assets/images/frr-kayou-skin.png" // Skin par défaut
+    });
+
+    // Configuration des contrôles caméra
+    window.skinViewer.controls.enableRotate = true;
+    window.skinViewer.controls.enableZoom = false;
+    window.skinViewer.controls.enablePan = false;
+
+    // Ajout d'une animation douce de marche
+    const walk = window.skinViewer.animations.add(skinview3d.WalkingAnimation);
+    walk.speed = 0.55;
+
+    // Intensités lumineuses
+    window.skinViewer.cameraLight.intensity = 0.8;
+    window.skinViewer.globalLight.intensity = 0.55;
+
+    // Écouteur d'évènement pour l'uploader de Skin (Sécurisé via window et Blob)
+    const uploader = document.getElementById("skin-uploader");
+    if (uploader) {
+        uploader.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            console.log("Chargement du skin utilisateur :", file.name);
+
+            // Génère une URL locale directe de l'image
+            const blobUrl = URL.createObjectURL(file);
+            
+            // Applique la texture
+            if (window.skinViewer) {
+                window.skinViewer.loadSkin(blobUrl);
+                console.log("Skin appliqué avec succès.");
+            } else {
+                console.error("Erreur : L'instance 3D (window.skinViewer) est introuvable.");
+            }
+        });
     }
 }

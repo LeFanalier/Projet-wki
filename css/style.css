@@ -429,3 +429,26 @@ aside.glass-panel {
     height: 0 !important;
     background: transparent !important;
 }
+/* --- Boutons de build en chiffres arabes (style texte épuré interactif) --- */
+.build-btn-text {
+    color: var(--gold-bright) !important;
+    opacity: 0.35;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+}
+
+.build-btn-text:hover {
+    opacity: 0.8;
+    color: white !important;
+}
+
+.build-btn-text.active {
+    opacity: 1 !important;
+    color: var(--gold) !important; /* Devient doré actif */
+    border-bottom-color: var(--gold) !important; /* Ligne dorée active au-dessous */
+    text-shadow: 0 0 8px var(--gold-glow);
+}

@@ -178,12 +178,12 @@
     <main class="flex-grow relative flex flex-col items-center justify-center p-4">
         
         <!-- SÉLECTEUR DE BUILD (1-5) -->
-        <div class="flex gap-10 mb-12 text-[10px] tracking-[0.4em] font-bold opacity-30">
-            <button data-build="1" class="text-white opacity-100 border-b border-white pb-2 transition-all">1</button>
-            <button data-build="2" class="hover:opacity-100 transition-all">2</button>
-            <button data-build="3" class="hover:opacity-100 transition-all">3</button>
-            <button data-build="4" class="hover:opacity-100 transition-all">4</button>
-            <button data-build="5" class="hover:opacity-100 transition-all">5</button>
+        <div class="flex gap-10 mb-12 text-[11px] tracking-[0.4em] font-bold justify-center">
+            <button data-build="1" class="build-btn-text active">1</button>
+            <button data-build="2" class="build-btn-text">2</button>
+            <button data-build="3" class="build-btn-text">3</button>
+            <button data-build="4" class="build-btn-text">4</button>
+            <button data-build="5" class="build-btn-text">5</button>
         </div>
 
         <!-- GRILLE D'ÉQUIPEMENT -->
@@ -198,29 +198,44 @@
                 <div data-slot="bottes" class="w-16 h-16 glass-panel"><span class="material-symbols-outlined opacity-20 text-3xl">ice_skating</span></div>
             </div>
 
-            <!-- CENTRE (ARCHE DU GUERRIER) -->
-            <div class="flex flex-col items-center">
-                <div class="h-[520px] w-80 relative flex items-center justify-center overflow-hidden">
-                <div class="absolute bottom-6 flex flex-col items-center gap-1 z-30">
-                    <div class="flex items-center gap-4">
-                        <!-- Bouton Moins -->
-                        <button onclick="changeLevel(-1)" class="attr-btn !w-6 !h-6 flex items-center justify-center font-bold text-xs" title="Réduire le niveau">-</button>
-                        
-                        <h2 class="medieval-title text-5xl font-light tracking-[0.4em] translate-x-[0.2em]"><span id="player-level">1</span></h2>
-                        
-                        <!-- Bouton Plus -->
-                        <button onclick="changeLevel(1)" class="attr-btn !w-6 !h-6 flex items-center justify-center font-bold text-xs" title="Augmenter le niveau">+</button>
+        <!-- CENTRE (ARCHE DU GUERRIER - ANIMÉ 3D) -->
+        <div class="flex flex-col items-center">
+            <div class="h-[520px] w-80 relative flex items-center justify-center overflow-hidden">
+                <div class="absolute inset-0 bg-white/[0.01] rounded-full blur-3xl"></div>
+                
+                <!-- Bouton Upload Flottant -->
+                <label class="absolute top-10 right-8 z-40 w-8 h-8 rounded-full glass-panel border border-white/10 hover:border-primary/50 text-primary cursor-pointer hover:text-white transition-all flex items-center justify-center" title="Invoquer votre propre Skin Minecraft">
+                    <span class="material-symbols-outlined text-base">upload_file</span>
+                    <input type="file" id="skin-uploader" accept="image/png" class="hidden">
+                </label>
+
+                <!-- Canvas pour le modèle 3D animé -->
+                <canvas id="skin_container" class="w-full h-full cursor-grab active:cursor-grabbing z-10"></canvas>
+            </div>
+            
+            <!-- ARTEFACTS (3 SLOTS) -->
+            <div class="flex justify-center gap-4 mt-8">
+                <div data-slot="artefact1" class="w-12 h-12 glass-panel opacity-50"><span class="material-symbols-outlined text-sm opacity-20">deployed_code</span></div>
+                <div data-slot="artefact2" class="w-12 h-12 glass-panel opacity-50"><span class="material-symbols-outlined text-sm opacity-20">deployed_code</span></div>
+                <div data-slot="artefact3" class="w-12 h-12 glass-panel opacity-50"><span class="material-symbols-outlined text-sm opacity-20">deployed_code</span></div>
+            </div>
+
+            <!-- CONTRÔLES INTERACTIFS DU NIVEAU (CENTRE DESORMAIS PARFAITEMENT ICI) -->
+            <div class="flex flex-col items-center gap-1 mt-6 z-30 font-bold">
+                <div class="flex items-center gap-6">
+                    <!-- Bouton Moins -->
+                    <button onclick="changeLevel(-1)" class="attr-btn !w-7 !h-7 flex items-center justify-center font-bold text-sm" title="Réduire le niveau">-</button>
+                    
+                    <div class="text-center min-w-24">
+                        <p class="text-[8px] uppercase tracking-[0.3em] text-[#a3855b] opacity-60 mb-0.5">Niveau</p>
+                        <h2 class="medieval-title text-4xl font-light tracking-[0.2em] leading-none translate-x-[0.1em]"><span id="player-level">19</span></h2>
                     </div>
-                    <p class="text-[8px] uppercase tracking-[0.3em] text-[#a3855b] opacity-60">Niveau</p>
-                </div>
-                </div>
-                <!-- ARTEFACTS (3 SLOTS) -->
-                <div class="flex justify-center gap-4 mt-8">
-                    <div data-slot="artefact1" class="w-12 h-12 glass-panel opacity-50"><span class="material-symbols-outlined text-sm opacity-20">deployed_code</span></div>
-                    <div data-slot="artefact2" class="w-12 h-12 glass-panel opacity-50"><span class="material-symbols-outlined text-sm opacity-20">deployed_code</span></div>
-                    <div data-slot="artefact3" class="w-12 h-12 glass-panel opacity-50"><span class="material-symbols-outlined text-sm opacity-20">deployed_code</span></div>
+                    
+                    <!-- Bouton Plus -->
+                    <button onclick="changeLevel(1)" class="attr-btn !w-7 !h-7 flex items-center justify-center font-bold text-sm" title="Augmenter le niveau">+</button>
                 </div>
             </div>
+        </div>
 
             <!-- COLONNE DROITE (Accessoires) -->
             <div class="flex flex-col gap-4">
@@ -297,6 +312,13 @@
 </div>
 
 <div id="footer-placeholder"></div>
+
+<!-- Bibliothèques 3D -->
+<script src="https://cdn.jsdelivr.net/npm/skinview3d@3/bundles/skinview3d.bundle.js"></script>
+
+<!-- Scripts de logique -->
+<script src="../js/supabase-config.js"></script>
+<script src="../js/app.js"></script>
 
 <!-- Scripts de logique -->
 <script src="../js/supabase-config.js"></script>
